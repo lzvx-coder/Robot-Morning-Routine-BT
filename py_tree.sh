@@ -2,4 +2,4 @@
 
 pip install py-trees
 
-python robot_morning_routine.py
+python RobotMorningRoutine.py

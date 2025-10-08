@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """
-Robot's Morning Routine Behavior Tree
-使用py_trees库实现机器人早晨起床流程
+**项目简介**:
+
+  使用Python的行为树库py_trees，构建一个模拟机器人早晨起床流程的行为树。你不需要控制任何真实或仿真的机器人，只需让行为节点打印信息即可。
+
+  - **基础行为 (Action Nodes)**: `IsAlarmRinging` (检查闹钟，随机返回成功或失败), `HitSnoozeButton` (打印"Snoozing..."), `GetOutOfBed` (打印"Getting up!"), `BrewCoffee` (打印"Brewing coffee...")。
+  - **任务逻辑**: 使用行为树的**控制流节点 (Control Flow Nodes)**，如`Sequence`（顺序执行）, `Selector`（选择其一）, `Parallel`（并行），来组合上述基础行为，实现一个有意义的流程。例如：“如果闹钟响了，机器人会选择‘起床’或‘按掉闹钟’；起床后，必须先‘冲咖啡’才能开始一天的工作”。
+
 """
 
 import py_trees
@@ -20,12 +25,12 @@ class IsAlarmRinging(py_trees.behaviour.Behaviour):
     def update(self):
         # 70% 概率闹钟响了
         if random.random() < 0.7:
-            self.feedback_message = "⏰ Alarm is ringing!"
-            print(f"✓ {self.feedback_message}")
+            self.feedback_message = "Alarm is ringing!"
+            print(f" {self.feedback_message}")
             return py_trees.common.Status.SUCCESS
         else:
-            self.feedback_message = "😴 Alarm not ringing yet..."
-            print(f"✗ {self.feedback_message}")
+            self.feedback_message = " Alarm not ringing "
+            print(f" {self.feedback_message}")
             return py_trees.common.Status.FAILURE
 
 
@@ -36,7 +41,7 @@ class HitSnoozeButton(py_trees.behaviour.Behaviour):
         super(HitSnoozeButton, self).__init__(name)
 
     def update(self):
-        print("💤 Snoozing... ZZZ")
+        print(" Snoozing...")
         return py_trees.common.Status.SUCCESS
 
 
@@ -47,7 +52,7 @@ class GetOutOfBed(py_trees.behaviour.Behaviour):
         super(GetOutOfBed, self).__init__(name)
 
     def update(self):
-        print("🛏️  Getting up!")
+        print("  Getting up!")
         return py_trees.common.Status.SUCCESS
 
 
@@ -58,7 +63,7 @@ class BrewCoffee(py_trees.behaviour.Behaviour):
         super(BrewCoffee, self).__init__(name)
 
     def update(self):
-        print("☕ Brewing coffee...")
+        print(" Brewing coffee...")
         return py_trees.common.Status.SUCCESS
 
 
@@ -76,13 +81,13 @@ class IsWeekday(py_trees.behaviour.Behaviour):
 
         if weekday < 5:  # Monday to Friday
             day_name = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"][weekday]
-            self.feedback_message = f"📅 Today is {day_name} (Weekday)"
-            print(f"✓ {self.feedback_message}")
+            self.feedback_message = f" Today is {day_name} (Weekday)"
+            print(f" {self.feedback_message}")
             return py_trees.common.Status.SUCCESS
         else:
             day_name = "Saturday" if weekday == 5 else "Sunday"
-            self.feedback_message = f"📅 Today is {day_name} (Weekend)"
-            print(f"✗ {self.feedback_message}")
+            self.feedback_message = f" Today is {day_name} (Weekend)"
+            print(f" {self.feedback_message}")
             return py_trees.common.Status.FAILURE
 
 
@@ -93,7 +98,7 @@ class StartWork(py_trees.behaviour.Behaviour):
         super(StartWork, self).__init__(name)
 
     def update(self):
-        print("💼 Starting work...")
+        print(" Starting work")
         return py_trees.common.Status.SUCCESS
 
 
@@ -104,36 +109,18 @@ class RelaxOnWeekend(py_trees.behaviour.Behaviour):
         super(RelaxOnWeekend, self).__init__(name)
 
     def update(self):
-        print("🏖️  Relaxing on the weekend!")
+        print(" Relaxing on the weekend!")
         return py_trees.common.Status.SUCCESS
 
 
 # ==================== 构建行为树 ====================
 
 def create_behavior_tree():
-    """
-    创建机器人早晨例程行为树
+    
+    #创建机器人早晨例程行为树
 
-    树结构:
-    Root (Sequence)
-    ├── Wake Up Routine (Selector)
-    │   ├── Snooze Sequence (Sequence)
-    │   │   ├── Is Alarm Ringing?
-    │   │   └── Hit Snooze
-    │   └── Get Out of Bed
-    ├── Morning Preparation (Sequence) - 仅工作日冲咖啡
-    │   ├── Weekday Coffee (Selector)
-    │   │   ├── Weekday Coffee Sequence (Sequence)
-    │   │   │   ├── Is Weekday?
-    │   │   │   └── Brew Coffee
-    │   │   └── Skip Coffee (Success)
-    └── Start Day (Selector)
-        ├── Work Sequence (Sequence)
-        │   ├── Is Weekday?
-        │   └── Start Work
-        └── Relax on Weekend
-    """
-
+   
+    
     # 根节点：整个早晨流程必须顺序执行
     root = py_trees.composites.Sequence(
         name="Morning Routine",
@@ -234,7 +221,7 @@ def main():
     """运行机器人早晨例程行为树"""
 
     print("=" * 60)
-    print("🤖 Robot's Morning Routine Behavior Tree")
+    print("Robot's Morning Routine Behavior Tree")
     print("=" * 60)
     print()
 
@@ -245,22 +232,22 @@ def main():
     bt.setup_with_descendants()
 
     # 打印行为树结构
-    print("📋 Behavior Tree Structure:")
+    print(" Behavior Tree Structure:")
     print(py_trees.display.unicode_tree(bt, show_status=True))
     print()
 
     # 执行行为树（执行多次以展示不同情况）
-    print("🚀 Executing Behavior Tree:")
+    print("Executing Behavior Tree:")
     print("-" * 60)
 
     for i in range(3):
-        print(f"\n▶️  Execution #{i + 1}")
+        print(f"\n  Execution {i + 1} time")
         print("-" * 40)
         bt.tick_once()
         print()
 
     print("=" * 60)
-    print("✅ Robot's morning routine completed!")
+    print(" Robot's morning routine completed!")
     print("=" * 60)
 
 
